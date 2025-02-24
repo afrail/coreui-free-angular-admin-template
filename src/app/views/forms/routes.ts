@@ -14,7 +14,7 @@ export const routes: Routes = [
       },
       {
         path: 'form-control',
-        loadComponent: () => import('./form-controls/form-controls.component').then(m => m.FormControlsComponent),
+        loadComponent: () => import('../pages/pages/form-controls/form-controls.component').then(m => m.FormControlsComponent),
         data: {
           title: 'Form Control'
         }
@@ -42,7 +42,7 @@ export const routes: Routes = [
       },
       {
         path: 'input-group',
-        loadComponent: () => import('./input-groups/input-groups.component').then(m => m.InputGroupsComponent),
+        loadComponent: () => import('../pages/pages/input-groups/input-groups.component').then(m => m.InputGroupsComponent),
         data: {
           title: 'Input Group'
         }

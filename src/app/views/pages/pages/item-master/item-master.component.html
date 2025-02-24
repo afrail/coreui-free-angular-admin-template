@@ -1,0 +1,288 @@
+<form [formGroup]="itemMasterForm" class="max-w-3xl mx-auto bg-white shadow-md p-5">
+
+    <div class="bg-green-700">
+        <h2 class="text-2xl font-bold mb-4 text-white-alpha-90 p-3 text-left rounded">Item Master</h2>
+    </div>
+
+    <div class="bg-green-50 card">
+        <div class="flex flex-col justify-content-between">
+            <div class="col-12 mb-2 lg:col-4 lg:mb-0 w-6">
+                <label for="name" class="block text-gray-700 font-medium mb-2">Name</label>
+                <input id="name" formControlName="name" type="text" pInputText placeholder="Name" class="w-full p-3 border rounded-2xl">
+            </div>
+
+            <div class="col-12 mb-2 lg:col-4 lg:mb-0 w-6">
+                <label for="banglaName" class="block text-gray-700 font-medium mb-2">Bangla Name</label>
+                <input id="banglaName" formControlName="banglaName" type="text" pInputText placeholder="Bangla Name" class="w-full p-3 border rounded-2xl">
+            </div>
+        </div>
+
+        <div class="flex flex-col justify-content-between">
+            <div class="col-12 mb-2 lg:col-4 lg:mb-0 w-6">
+                <label for="code" class="block text-gray-700 font-medium mb-2">Code</label>
+                <input id="code" formControlName="code" type="text" pInputText placeholder="Code" class="w-full p-3 border rounded-2xl">
+            </div>
+
+            <div class="col-12 mb-2 lg:col-4 lg:mb-0 w-6">
+                <label for="category" class="block text-gray-700 font-medium mb-2">Category</label>
+                <p-dropdown
+                    id="category"
+                    formControlName="category"
+                    [options]="itemCategoriesDropdown"
+                    optionLabel="name"
+                    placeholder="Select"
+                    [filter]="true"
+                    filterBy="name"
+                    [showClear]="true"
+                    styleClass="w-full"
+                >
+                    <ng-template pTemplate="header">
+                        <div class="font-bold p-2">Category List</div>
+                    </ng-template>
+                    <ng-template let-item pTemplate="item">
+                        <div>{{ item.name }}</div>
+                    </ng-template>
+                </p-dropdown>
+            </div>
+        </div>
+
+        <div class="flex flex-col justify-content-between">
+
+            <div class="col-12 mb-2 lg:col-4 lg:mb-0 w-6">
+                <label for="unit" class="block text-gray-700 font-medium mb-2">Unit</label>
+                <p-dropdown
+                    id="unit"
+                    formControlName="unit"
+                    [options]="unitList"
+                    optionLabel="name"
+                    placeholder="Select"
+                    [filter]="true"
+                    filterBy="name"
+                    [showClear]="true"
+                    styleClass="w-full"
+                >
+                    <ng-template pTemplate="header">
+                        <div class="font-bold p-2">Unit List</div>
+                    </ng-template>
+                    <ng-template let-item pTemplate="item">
+                        <div>{{ item.name }}</div>
+                    </ng-template>
+                </p-dropdown>
+            </div>
+
+            <div class="col-12 mb-2 lg:col-4 lg:mb-0 w-6">
+                <label for="price" class="block text-gray-700 font-medium mb-2">Price</label>
+                <input id="price" formControlName="price" type="text" pInputText placeholder="Price" class="w-full p-3 border rounded-2xl">
+            </div>
+        </div>
+
+        <div class="flex flex-col justify-content-between">
+            <div class="col-12 mb-2 lg:col-4 lg:mb-0 w-4">
+                <label for="availableStock" class="block text-gray-700 font-medium mb-2">Available Stock</label>
+                <input id="availableStock" formControlName="availableStock" type="text" pInputText placeholder="Available Stock" class="w-full p-3 border rounded-2xl">
+            </div>
+
+            <div class="col-12 mb-2 lg:col-4 lg:mb-0 w-4">
+                <label for="winingStock" class="block text-gray-700 font-medium mb-2">Wining Stock</label>
+                <input id="winingStock" formControlName="winingStock" type="text" pInputText placeholder="Wining Stock" class="w-full p-3 border rounded-2xl">
+            </div>
+
+            <div class="col-12 mb-2 lg:col-4 lg:mb-0 w-4">
+                <label for="itemType" class="block text-gray-700 font-medium mb-2">Item Type</label>
+                <p-dropdown
+                    id="itemType"
+                    formControlName="itemType"
+                    [options]="itemTypeList"
+                    optionLabel="name"
+                    placeholder="Select"
+                    [filter]="true"
+                    filterBy="name"
+                    [showClear]="true"
+                    styleClass="w-full"
+                >
+                    <ng-template pTemplate="header">
+                        <div class="font-bold p-2">Item Types</div>
+                    </ng-template>
+                    <ng-template let-item pTemplate="item">
+                        <div>{{ item.name }}</div>
+                    </ng-template>
+                </p-dropdown>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="mt-6 flex justify-content-between">
+            <div class="field-checkbox gap-2 ml-3">
+                <p-checkbox
+                    formControlName="active"
+                    id="active"
+                    binary="true"
+                ></p-checkbox>
+                <label for="active">Active?</label>
+            </div>
+
+            <div class="flex gap-5">
+                <button
+                    pButton
+                    pRipple
+                    label="Reset"
+                    (click)="onReset()"
+                    type="reset"
+                    class="bg-gray-600 hover:bg-black-alpha-40 text-white px-6"
+                ></button>
+                <button
+                    type="submit"
+                    (click)="onSubmit()"
+                    *ngIf="!editValue"
+                    [disabled]="!itemMasterForm.valid || searchLoader"
+                    pButton
+                    pRipple
+                    class="bg-green-600 text-white px-5 hover:bg-blue-700 flex items-center justify-center"
+                >
+                    <i *ngIf="searchLoader" class="pi pi-spin pi-spinner mr-2"></i>
+                    <span *ngIf="!searchLoader">Save</span>
+                </button>
+                <button
+                    type="submit"
+                    (click)="update()"
+                    *ngIf="editValue"
+                    [disabled]="!itemMasterForm.valid || searchLoader"
+                    pButton
+                    pRipple
+                    class="bg-green-600 text-white px-5 hover:bg-blue-700 flex items-center justify-center"
+                >
+                    <i *ngIf="searchLoader" class="pi pi-spin pi-spinner mr-2"></i>
+                    <span *ngIf="!searchLoader">Update</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<!-- Add this below the existing form -->
+<div class="card bg-white shadow-md p-5 mt-1">
+    <div>
+        <h2 class="text-2xl font-bold my-4 text-blue-alpha-90 p-2 text-left rounded-xl flex items-center gap-2">
+            <svg class="w-2rem h-2rem" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 6h16M4 12h16M4 18h16" stroke-width="2" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            Item Master List
+        </h2>
+    </div>
+    <p-table
+        [value]="itemMasterList"
+        [paginator]="true"
+        [rows]="10"
+        [rowsPerPageOptions]="[5, 10, 25]"
+        styleClass="p-datatable-striped p-datatable-gridlines"
+        responsiveLayout="scroll"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th class="text-left p-3 text-white bg-bluegray-300">SL</th>
+                <th class="text-left p-3 text-white bg-bluegray-300">Name</th>
+                <th class="text-left p-3 text-white bg-bluegray-300">Bangla Name</th>
+                <th class="text-left p-3 text-white bg-bluegray-300">Code</th>
+                <th class="text-left p-3 text-white bg-bluegray-300">Category</th>
+                <th class="text-left p-3 text-white bg-bluegray-300">Unit</th>
+                <th class="text-left p-3 text-white bg-bluegray-300">Price</th>
+                <th class="text-left p-3 text-white bg-bluegray-300">Available Stock</th>
+                <th class="text-left p-3 text-white bg-bluegray-300">Wining Stock</th>
+                <th class="text-left p-3 text-white bg-bluegray-300">Item Type</th>
+                <th class="text-left p-3 text-white bg-bluegray-300">Active</th>
+                <th class="text-left p-3 text-white bg-bluegray-300">Actions</th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-commonSetup let-rowIndex="rowIndex">
+            <tr class="hover:bg-gray-50">
+                <td class="p-3">{{ rowIndex + 1 }}</td>
+                <td class="p-3">{{ commonSetup?.name }}</td>
+                <td class="p-3">{{ commonSetup?.banglaName }}</td>
+                <td class="p-3">{{ commonSetup?.code }}</td>
+                <td class="p-3">{{ commonSetup?.category?.name }}</td>
+                <td class="p-3">{{ commonSetup?.unit?.name }}</td>
+                <td class="p-3">{{ commonSetup?.price }}</td>
+                <td class="p-3">{{ commonSetup?.availableStock }}</td>
+                <td class="p-3">{{ commonSetup?.winingStock }}</td>
+                <td class="p-3">{{ commonSetup?.itemType?.name }}</td>
+                <td class="p-3">
+                    <i *ngIf="commonSetup.active" class="pi pi-check-circle text-green-600"></i>
+                    <i *ngIf="!commonSetup.active" class="pi pi-times-circle text-red-600"></i>
+                </td>
+                <td class="p-3">
+                    <button
+                        (click)="editItem(commonSetup)"
+                        pButton
+                        pRipple
+                        icon="pi pi-pencil"
+                        class="p-button-rounded p-button-text text-blue-600"
+                        pTooltip="Edit Item"
+                        tooltipPosition="top">
+                    </button>
+
+                    <button
+                        (click)="deleteItem(commonSetup)"
+                        [disabled]="disableDelete"
+                        pButton
+                        pRipple
+                        icon="pi pi-trash"
+                        class="p-button-rounded p-button-text text-red-600 ml-2"
+                        pTooltip="Delete Item"
+                        tooltipPosition="top">
+                    </button>
+                </td>
+
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="12" class="text-center p-3 text-gray-500">
+                    No records found
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<!--dialog box and toaster-->
+<div>
+    <p-dialog
+        [(visible)]="deleteProductDialog"
+        header="Confirm"
+        [modal]="true"
+        [style]="{ width: '450px' }"
+    >
+        <div class="flex align-items-center justify-content-center">
+            <i
+                class="pi pi-exclamation-triangle mr-3"
+                style="font-size: 2rem"
+            ></i>
+            <span *ngIf="product"
+            >Are you sure you want to delete <b>{{ product.roles }}</b
+            >?</span
+            >
+        </div>
+        <ng-template pTemplate="footer">
+            <button
+                pButton
+                pRipple
+                icon="pi pi-times"
+                class="p-button-text"
+                label="No"
+                (click)="deleteProductDialog = false"
+            ></button>
+            <button
+                pButton
+                pRipple
+                icon="pi pi-check"
+                class="p-button-text"
+                label="Yes"
+                (click)="confirmDelete(item)"
+            ></button>
+        </ng-template>
+    </p-dialog>
+    <p-toast position="top-center"></p-toast>
+</div>
